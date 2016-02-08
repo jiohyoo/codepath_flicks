@@ -8,14 +8,17 @@
 import UIKit
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
     
     var movies: [NSDictionary]?
     var endpoint: String!
     @IBOutlet weak var errorView: UIView!
-    
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var segmentedControll: UISegmentedControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,6 +28,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         tableView.dataSource = self
         tableView.delegate = self
+
+        
+        let refreshControl2 = UIRefreshControl()
+        refreshControl2.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
+        collectionView.insertSubview(refreshControl2, atIndex: 0)
+
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string:"http://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
@@ -54,6 +65,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 }
                 
                 self.tableView.reloadData()
+                self.collectionView.reloadData()
                 // Hide HUD once the network request comes back (must be done on main UI thread)
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
         })
@@ -94,14 +106,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 // Reload the tableView now that there is new data
                 self.tableView.reloadData()
+                self.collectionView.reloadData()
                 
                 // Tell the refreshControl to stop spinning
                 refreshControl.endRefreshing()	
         });
         task.resume()
     }
-    
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -135,15 +146,63 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if movies!.count >= section * 2 {
+            return 2
+        } else {
+            return 1
+        }
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        if let movies = movies {
+            return movies.count / 2
+        } else {
+            return 0
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("movieitem", forIndexPath: indexPath) as! MovieItem
 
+        let movie = movies![indexPath.section * 2 + indexPath.row]
+        cell.titleLabel.text = movie["title"] as! String
+        
+        let baseUrl = "http://image.tmdb.org/t/p/w500"
+        if let posterPath = movie["poster_path"] as? String {
+            let imageUrl = NSURL(string: baseUrl + posterPath)!
+            cell.posterView.setImageWithURL(imageUrl)
+        }
+
+        
+        return cell
+    }
+
+    
+    @IBAction func onSegmentedControlValueChanged(sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            self.collectionView.hidden = true
+            self.tableView.hidden = false
+        } else {
+            self.tableView.hidden = true
+            self.collectionView.hidden = false
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let cell = sender as! UITableViewCell
-        let indexPath = self.tableView.indexPathForCell(cell)
-        
-        let movie = movies![indexPath!.row]
-        
-        let detailVC = segue.destinationViewController as! DetailViewController
-        detailVC.movie = movie
+        if let cell = sender as? UITableViewCell {
+            let indexPath = self.tableView.indexPathForCell(cell)
+            let movie = movies![indexPath!.row]
+            let detailVC = segue.destinationViewController as! DetailViewController
+            detailVC.movie = movie
+        } else {
+            let cell = sender as! UICollectionViewCell
+            let indexPath = self.collectionView.indexPathForCell(cell)
+            let movie = movies![indexPath!.section * 2 + indexPath!.row]
+            let detailVC = segue.destinationViewController as! DetailViewController
+            detailVC.movie = movie
+        }
     }
 
 }

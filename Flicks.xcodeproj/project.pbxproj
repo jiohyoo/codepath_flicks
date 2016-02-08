@@ -17,6 +17,7 @@
 		AD4EB7061C675DA000DDBBE7 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4EB7051C675DA000DDBBE7 /* MoviesViewController.swift */; };
 		AD69ACEE1C67707100A7C7D0 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD69ACED1C67707100A7C7D0 /* MovieCell.swift */; };
 		AD69ACF11C67746000A7C7D0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD69ACF01C67746000A7C7D0 /* DetailViewController.swift */; };
+		ADB4DFFB1C6856520024E7D5 /* MovieItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB4DFFA1C6856520024E7D5 /* MovieItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		AD4EB7051C675DA000DDBBE7 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		AD69ACED1C67707100A7C7D0 /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		AD69ACF01C67746000A7C7D0 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		ADB4DFFA1C6856520024E7D5 /* MovieItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieItem.swift; sourceTree = "<group>"; };
 		DE5550A438894ABDDBC70687 /* Pods-Flicks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flicks.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flicks/Pods-Flicks.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				AD69ACED1C67707100A7C7D0 /* MovieCell.swift */,
+				ADB4DFFA1C6856520024E7D5 /* MovieItem.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				AD4EB6D81C675BA500DDBBE7 /* AppDelegate.swift in Sources */,
 				AD4EB7061C675DA000DDBBE7 /* MoviesViewController.swift in Sources */,
 				AD69ACEE1C67707100A7C7D0 /* MovieCell.swift in Sources */,
+				ADB4DFFB1C6856520024E7D5 /* MovieItem.swift in Sources */,
 				AD69ACF11C67746000A7C7D0 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
